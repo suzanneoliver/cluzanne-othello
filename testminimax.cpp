@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
      * TODO: Write code to set your player's internal board state to the
      * example state.
      */
-
+	player->set_Board(board);
     // Get player's move and check if it's right.
     Move *move = player->doMove(nullptr, 0);
 
@@ -46,6 +46,6 @@ int main(int argc, char *argv[]) {
         }
         std::cout << ", expected (1, 1)" << std::endl;
     }
-
+	delete board;
     return 0;
 }
