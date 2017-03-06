@@ -1,6 +1,10 @@
 #include "player.hpp"
 
-// Consider this comment Claudia's change. 
+<<<<<<< HEAD
+
+=======
+// commiting some changes
+>>>>>>> a5a3314476188d0d762efedc5a552a1e6ae20bd1
 
 /*
  * Constructor for the player; initialize everything here. The side your AI is
