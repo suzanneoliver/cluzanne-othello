@@ -80,52 +80,49 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 		 else
 		 {
 			 ourmove = bestMinimaxMove(ourside, opponentside);
-		 }
+		 } 
 		 playerBoard->Board::doMove(ourmove, ourside);
 		 return ourmove;
-	 }
-    return nullptr;
+	 } 
+    return nullptr; 
 }
 
 // Using minimax algorithm
-Move *Player::bestMinimaxMove(Side ourSide, Side oppside)
+Move *Player::bestMinimaxMove(Side ourSide, Side oppSide)
 {
 	// While we can still make a move
 	if (playerBoard->hasMoves(ourSide))
 	{
 		vector<Move*> movestomake = playerBoard->Board::movesWeCanMake(ourSide);
 		Move *bestmove = movestomake[0];
-		Move *temp;
-		int tscore;
+		int cur_min = 1000;
+		int cur_max = -1000;
 		
-		Board *tboard = playerBoard->Board::copy();
-		tboard->Board::doMove(bestmove, ourSide);
-		temp = tboard->Board::bestSpace(oppside);
+	    
+	    for (unsigned int i = 0; i < movestomake.size(); i ++)
+	    {
+		    Board *tboard = playerBoard->Board::copy();
+		    tboard->Board::doMove(movestomake[i], ourSide);
+		    vector<Move*> opp_moves = tboard->Board::movesWeCanMake(oppSide);
 		
-		tboard->Board::doMove(temp, oppside);
-		int mecount = tboard->Board::count(ourSide);
-		int oppcount = tboard->Board::count(oppside);
-		
-		int bestscore = mecount - oppcount;
-		
-		if (movestomake.size() >= 2)
-		{
-			for (unsigned int i = 1; i < movestomake.size(); i++)
-			{
-				tboard = playerBoard->Board::copy();
-				tboard->Board::doMove(movestomake[i], ourSide);
-				if (tboard->hasMoves(oppside))
-				{
-					temp = tboard->Board::bestSpace(oppside);
-					tboard->Board::doMove(temp, oppside);
-					tscore = tboard->Board::score(ourSide) - tboard->Board::score(oppside);
-					
-					if (tscore > bestscore)
-					{
-						bestmove = movestomake[i];
-					}
-				}
-			}
+		    for (unsigned int j = 0; j < opp_moves.size(); j ++)
+		    {
+		        Board *cboard = tboard->Board::copy();
+		        cboard->Board::doMove(opp_moves[i], oppSide);
+		        int mecount = tboard->Board::count(ourSide);
+		        int oppcount = tboard->Board::count(oppSide);		
+		        int offset = mecount - oppcount;
+		        
+		        if (offset < cur_min)
+		        {
+		            cur_min = offset;
+		        }
+		    }
+		    if (cur_min > cur_max)
+		    {
+		        bestmove = movestomake[i];
+		        cur_max = cur_min;
+		    }
 		}
 		return bestmove;
 	}

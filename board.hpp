@@ -35,7 +35,7 @@ public:
     void setBoard(char data[]);
     
     int changed(Move *m, Side side);
-    int score(Side side);
+    int score(Move *move);
     bool innerSquare();
     
     Move *firstMove(Side side);
