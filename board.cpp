@@ -180,6 +180,7 @@ void Board::setBoard(char data[]) {
     }
 }
 
+// Returns a list of all the possible moves a side can make.
 vector<Move*> Board::movesWeCanMake(Side side)
 {
 	vector<Move*> ans;
@@ -201,26 +202,8 @@ vector<Move*> Board::movesWeCanMake(Side side)
 	return ans;
 }
 
-Move *Board::firstMove(Side side)
-{
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			Move *move = new Move(i, j);
-			if (checkMove(move, side))
-			{
-				return move;
-			}
-			else
-			{
-				delete move;
-			}
-		}
-	}
-	return nullptr;
-}
 
+// Returns the number of pieces that would change color for a given move
 int Board::changed(Move *m, Side side)
 {
 	int counter = 0;
@@ -268,7 +251,7 @@ int Board::changed(Move *m, Side side)
 }
 				
 Move *Board::countBestMoves(Side side)
-// calculates value of move based on number of pieces changing colour
+// calculates value of move based on number of pieces changing color
 {
 	Move *move;	
 	vector<Move*> potentialmoves = movesWeCanMake(side);
@@ -289,7 +272,8 @@ Move *Board::countBestMoves(Side side)
 }
 
 Move *Board::bestSpace(Side side)
-// calculates best move, using number of possible pieces flipped and location of move on board
+// calculates best move, using number of possible pieces flipped 
+// and location of move on board
 {
 	vector<Move*> pot_moves = movesWeCanMake(side);
 	if (pot_moves.size() > 0)

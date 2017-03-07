@@ -38,7 +38,6 @@ public:
     int score(Move *move);
     bool innerSquare();
     
-    Move *firstMove(Side side);
     Move *bestSpace(Side side);
     Move *countBestMoves(Side side);
     

@@ -72,7 +72,8 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 		 playerBoard->Board::doMove(opponentsMove, opponentside);
 		 
 		 Move *ourmove;
-		
+		// Decide our move according to whether or not we're using 
+		// minimax algorithm.
 		 if (!testingMinimax)
 		 {
 			 ourmove = playerBoard->Board::bestSpace(ourside);
