@@ -268,6 +268,7 @@ int Board::changed(Move *m, Side side)
 }
 				
 Move *Board::countBestMoves(Side side)
+// calculates value of move based on number of pieces changing colour
 {
 	Move *move;	
 	vector<Move*> potentialmoves = movesWeCanMake(side);
@@ -288,6 +289,7 @@ Move *Board::countBestMoves(Side side)
 }
 
 Move *Board::bestSpace(Side side)
+// calculates best move, using number of possible pieces flipped and location of move on board
 {
 	vector<Move*> pot_moves = movesWeCanMake(side);
 	if (pot_moves.size() > 0)
@@ -297,7 +299,8 @@ Move *Board::bestSpace(Side side)
 	    int cur_score;
 	    for (unsigned int i = 1; i < pot_moves.size(); i ++)
 	    {
-	        cur_score = score(pot_moves[i]);
+	        cur_score = score(pot_moves[i]) + changed(pot_moves[i], side);
+	        
 	        if (cur_score > best_score)
 	        {
 	            best_move = pot_moves[i];
@@ -325,7 +328,9 @@ bool Board::innerSquare()
 }		
 		
 int Board::score(Move* move)
+// calculates value of move based on its location
 {
+    // sort the squares based on their location on the board.
 	int corners[] = {0, 0, 0, 7, 7, 0, 7, 7};
 	int edges[] = {0, 2, 0, 3, 0, 4, 0, 5, 7, 2, 7, 3, 7, 4, 7, 5, 2, 0, 3, 0, 4, 0, 5, 0, 2, 7, 3, 7, 4, 7, 5, 7};
 	int inner_board[] = {3,3, 3,4, 4,3, 4,4, 2,2, 2,5, 5,2, 5,5};
@@ -338,6 +343,7 @@ int Board::score(Move* move)
 	int x = move->getX();
 	int y = move->getY();
 	
+	// assign scores based on favourability of locations
 	for (int a = 0; a < 8; a += 2)
 	{
 		if (x == corners[a] && y == corners[a+1])
@@ -388,7 +394,7 @@ int Board::score(Move* move)
 		}
 	}
 	std::cerr << "Not a valid move" << x << y << std::endl;
-	return -99; //not a valid move
+	return -99; // if the move was not in one of the groups, it is not valid.
 }
 	
 

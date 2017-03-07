@@ -72,7 +72,7 @@ Move *Player::doMove(Move *opponentsMove, int msLeft) {
 		 playerBoard->Board::doMove(opponentsMove, opponentside);
 		 
 		 Move *ourmove;
-		 
+		
 		 if (!testingMinimax)
 		 {
 			 ourmove = playerBoard->Board::bestSpace(ourside);
@@ -103,25 +103,29 @@ Move *Player::bestMinimaxMove(Side ourSide, Side oppSide)
 	    {
 		    Board *tboard = playerBoard->Board::copy();
 		    tboard->Board::doMove(movestomake[i], ourSide);
-		    vector<Move*> opp_moves = tboard->Board::movesWeCanMake(oppSide);
-		
-		    for (unsigned int j = 0; j < opp_moves.size(); j ++)
+		    
+		    if (tboard->hasMoves(oppSide))
 		    {
-		        Board *cboard = tboard->Board::copy();
-		        cboard->Board::doMove(opp_moves[i], oppSide);
-		        int mecount = tboard->Board::count(ourSide);
-		        int oppcount = tboard->Board::count(oppSide);		
-		        int offset = mecount - oppcount;
-		        
-		        if (offset < cur_min)
+		        vector<Move*> opp_moves = tboard->Board::movesWeCanMake(oppSide);
+		        for (unsigned int j = 0; j < opp_moves.size(); j ++)
 		        {
-		            cur_min = offset;
+		            Board *cboard = tboard->Board::copy();
+		            cboard->Board::doMove(opp_moves[i], oppSide);
+		            int mecount = cboard->Board::count(ourSide);
+		            int oppcount = cboard->Board::count(oppSide);		
+		            int offset = mecount - oppcount;
+		        
+		            if (offset < cur_min)
+		            {
+		                cur_min = offset;
+		            }
+		            delete cboard;
+		        }   
+		        if (cur_min > cur_max)
+		        {
+		            bestmove = movestomake[i];
+		            cur_max = cur_min;
 		        }
-		    }
-		    if (cur_min > cur_max)
-		    {
-		        bestmove = movestomake[i];
-		        cur_max = cur_min;
 		    }
 		}
 		return bestmove;
