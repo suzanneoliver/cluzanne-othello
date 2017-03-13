@@ -14,6 +14,4 @@ beat Constant Time Player
 -Debugged functions in board.cpp / made them more elegant
 
 
-As far as making our AI "tournament worthy", our main effort was in
-implementing the heuristics for our player and making sure our code
-compiled. 
+To improve our AI, we evaluated the possible moves in two different ways. First, we weighted the value of each square on the board, according to the desirability of the square (ie. corners are weighted highly, spaces that give the other player access to corners have negative weight). The second evaluation was to compare how many coins would be flipped for each possible move. These two considerations were given equal weight and the AI choses the best scoring space to play on. This evaluation is enough to beat ConstantTimePlayer, and makes our AI tournament-worthy.
